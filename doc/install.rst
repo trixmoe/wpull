@@ -23,7 +23,7 @@ Wpull requires the following:
 
 The following are optional:
 
-* `psutil` for monitoring disk space
+* `psutil <https://pypi.python.org/pypi/psutil>`_ for monitoring disk space
 * `Manhole <https://pypi.python.org/pypi/manhole>`_ for a REPL debugging socket
 * `PhantomJS 1.9.8, 2.1 <http://phantomjs.org/>`_ for capturing interactive
   JavaScript pages
