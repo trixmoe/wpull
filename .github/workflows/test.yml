@@ -1,0 +1,20 @@
+name: Tests
+
+on:
+  push:
+  pull_request:
+    types: [opened, synchronize, reopened]
+permissions: {}
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-24.04
+    container:
+      image: python:3.5
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install -r requirements.txt
+      - run: pip install nose coverage warcat youtube-dl
+      - run: pip install . --no-dependencies
+      - run: nosetests --with-coverage --cover-package=wpull --cover-branches
