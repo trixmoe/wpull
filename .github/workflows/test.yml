@@ -10,8 +10,11 @@ jobs:
   test:
     name: Test
     runs-on: ubuntu-24.04
-    container:
-      image: python:3.5
+    strategy:
+      fail-fast: false
+      matrix:
+        container: [ python:3.4, python:3.5, python:3.6 ]
+    container: ${{ matrix.container }}
     steps:
       - uses: actions/checkout@v4
       - run: pip install -r requirements.txt
