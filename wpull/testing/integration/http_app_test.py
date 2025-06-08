@@ -15,7 +15,7 @@ from wpull.errors import ExitStatus
 from wpull.network.dns import Resolver, ResolveResult, AddressInfo
 from wpull.testing.integration.base import HTTPGoodAppTestCase, \
     tornado_future_adapter, HTTPBadAppTestCase
-import wpull.testing.async
+import wpull.testing._async
 from wpull.url import URLInfo
 
 _logger = logging.getLogger(__name__)
@@ -26,8 +26,7 @@ class MockDNSResolver(Resolver):
         Resolver.__init__(self, *args, **kwargs)
         self.hosts_touched = set()
 
-    @asyncio.coroutine
-    def resolve(self, host):
+    async def resolve(self, host):
         self.hosts_touched.add(host)
         return ResolveResult([
             AddressInfo('127.0.0.1', socket.AF_INET, None, None)
@@ -35,7 +34,7 @@ class MockDNSResolver(Resolver):
 
 
 class TestHTTPGoodApp(HTTPGoodAppTestCase):
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_one_page(self):
         arg_parser = AppArgumentParser()
         args = arg_parser.parse_args([self.get_url('/')])
@@ -59,7 +58,7 @@ class TestHTTPGoodApp(HTTPGoodAppTestCase):
         self.assertEqual('hi', cookies[0].name)
         self.assertEqual('hello', cookies[0].value)
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_big_payload(self):
         hash_obj = hashlib.sha1(b'foxfoxfox')
         payload_list = []
@@ -87,7 +86,7 @@ class TestHTTPGoodApp(HTTPGoodAppTestCase):
         self.assertEqual(0, exit_code)
         self.assertEqual(1, builder.factory['Statistics'].files)
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_many_page_with_some_fail(self):
         arg_parser = AppArgumentParser()
         args = arg_parser.parse_args([
@@ -106,7 +105,7 @@ class TestHTTPGoodApp(HTTPGoodAppTestCase):
         self.assertGreater(builder.factory['Statistics'].files, 1)
         self.assertGreater(builder.factory['Statistics'].duration, 3)
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_app_args(self):
         arg_parser = AppArgumentParser()
         args = arg_parser.parse_args([
@@ -167,7 +166,7 @@ class TestHTTPGoodApp(HTTPGoodAppTestCase):
         self.assertEqual(0, exit_code)
         self.assertEqual(builder.factory['Statistics'].files, 2)
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_app_input_file_arg(self):
         arg_parser = AppArgumentParser(real_exit=False)
         with tempfile.NamedTemporaryFile() as in_file:
@@ -186,7 +185,7 @@ class TestHTTPGoodApp(HTTPGoodAppTestCase):
         self.assertEqual(0, exit_code)
         self.assertEqual(builder.factory['Statistics'].files, 2)
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_app_input_html_file_arg(self):
         arg_parser = AppArgumentParser(real_exit=False)
         with tempfile.NamedTemporaryFile() as in_file:
@@ -208,7 +207,7 @@ class TestHTTPGoodApp(HTTPGoodAppTestCase):
         self.assertEqual(0, exit_code)
         self.assertEqual(builder.factory['Statistics'].files, 2)
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_app_input_file_arg_stdin(self):
         arg_parser = AppArgumentParser(real_exit=False)
 
@@ -229,7 +228,7 @@ class TestHTTPGoodApp(HTTPGoodAppTestCase):
         self.assertEqual(0, exit_code)
         self.assertEqual(builder.factory['Statistics'].files, 1)
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_app_args_post_data(self):
         arg_parser = AppArgumentParser()
         args = arg_parser.parse_args([
@@ -241,7 +240,7 @@ class TestHTTPGoodApp(HTTPGoodAppTestCase):
         exit_code = yield from app.run()
         self.assertEqual(0, exit_code)
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_iri_handling(self):
         arg_parser = AppArgumentParser()
         args = arg_parser.parse_args([
@@ -262,7 +261,7 @@ class TestHTTPGoodApp(HTTPGoodAppTestCase):
 
         self.assertEqual(0, exit_code)
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_save_cookie(self):
         arg_parser = AppArgumentParser()
 
@@ -293,7 +292,7 @@ class TestHTTPGoodApp(HTTPGoodAppTestCase):
             self.assertIn(b'isloggedin\t1', cookie_data)
             self.assertNotIn(b'admin\t1', cookie_data)
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_session_cookie(self):
         arg_parser = AppArgumentParser()
 
@@ -351,7 +350,7 @@ class TestHTTPGoodApp(HTTPGoodAppTestCase):
 
             self.assertIn(b'test\tyes', cookie_data)
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_redirect_diff_host(self):
         arg_parser = AppArgumentParser()
         args = arg_parser.parse_args([
@@ -371,7 +370,7 @@ class TestHTTPGoodApp(HTTPGoodAppTestCase):
         resolver = builder.factory['Resolver']
         self.assertIn('somewhereelse.invalid', resolver.hosts_touched)
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_redirect_diff_host_recursive(self):
         arg_parser = AppArgumentParser()
         args = arg_parser.parse_args([
@@ -391,7 +390,7 @@ class TestHTTPGoodApp(HTTPGoodAppTestCase):
         resolver = builder.factory['Resolver']
         self.assertIn('somewhereelse.invalid', resolver.hosts_touched)
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_redirect_span_hosts_allow_linked(self):
         arg_parser = AppArgumentParser()
         args = arg_parser.parse_args([
@@ -413,7 +412,7 @@ class TestHTTPGoodApp(HTTPGoodAppTestCase):
         resolver = builder.factory['Resolver']
         self.assertIn('linked.test', resolver.hosts_touched)
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_redirect_span_hosts_page_requisites(self):
         arg_parser = AppArgumentParser()
         args = arg_parser.parse_args([
@@ -435,7 +434,7 @@ class TestHTTPGoodApp(HTTPGoodAppTestCase):
         resolver = builder.factory['Resolver']
         self.assertIn('pagereq.test', resolver.hosts_touched)
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_strong_redirect(self):
         arg_parser = AppArgumentParser()
         args = arg_parser.parse_args([
@@ -456,7 +455,7 @@ class TestHTTPGoodApp(HTTPGoodAppTestCase):
         resolver = builder.factory['Resolver']
         self.assertNotIn('somewhereelse.invalid', resolver.hosts_touched)
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_immediate_robots_fail(self):
         arg_parser = AppArgumentParser()
         args = arg_parser.parse_args([
@@ -481,7 +480,7 @@ class TestHTTPGoodApp(HTTPGoodAppTestCase):
         self.assertEqual(0, exit_code)
         self.assertEqual(0, builder.factory['Statistics'].files)
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_immediate_robots_forbidden(self):
         arg_parser = AppArgumentParser()
         args = arg_parser.parse_args([
@@ -496,7 +495,7 @@ class TestHTTPGoodApp(HTTPGoodAppTestCase):
         self.assertEqual(0, exit_code)
         self.assertEqual(0, builder.factory['Statistics'].files)
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_immediate_robots_error(self):
         arg_parser = AppArgumentParser()
         args = arg_parser.parse_args([
@@ -514,7 +513,7 @@ class TestHTTPGoodApp(HTTPGoodAppTestCase):
         self.assertEqual(4, exit_code)
         self.assertEqual(1, builder.factory['Statistics'].files)
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_quota(self):
         arg_parser = AppArgumentParser()
         args = arg_parser.parse_args([
@@ -531,7 +530,7 @@ class TestHTTPGoodApp(HTTPGoodAppTestCase):
         self.assertEqual(0, exit_code)
         self.assertEqual(1, builder.factory['Statistics'].files)
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_content_on_error(self):
         arg_parser = AppArgumentParser()
         args = arg_parser.parse_args([
@@ -550,7 +549,7 @@ class TestHTTPGoodApp(HTTPGoodAppTestCase):
         self.assertEqual(0, exit_code)
         self.assertEqual(1, builder.factory['Statistics'].files)
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_sitemaps(self):
         arg_parser = AppArgumentParser()
         args = arg_parser.parse_args([
@@ -574,7 +573,7 @@ class TestHTTPGoodApp(HTTPGoodAppTestCase):
         self.assertEqual(0, exit_code)
         self.assertGreaterEqual(4, builder.factory['Statistics'].files)
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_sitemaps_and_no_parent(self):
         arg_parser = AppArgumentParser()
         args = arg_parser.parse_args([
@@ -599,7 +598,7 @@ class TestHTTPGoodApp(HTTPGoodAppTestCase):
         self.assertEqual(0, exit_code)
         self.assertGreaterEqual(1, builder.factory['Statistics'].files)
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_local_encoding(self):
         arg_parser = AppArgumentParser()
 
@@ -625,7 +624,7 @@ class TestHTTPGoodApp(HTTPGoodAppTestCase):
         self.assertEqual(0, exit_code)
         self.assertEqual(2, builder.factory['Statistics'].files)
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_no_iri(self):
         arg_parser = AppArgumentParser()
         args = arg_parser.parse_args([
@@ -641,7 +640,7 @@ class TestHTTPGoodApp(HTTPGoodAppTestCase):
         self.assertEqual(0, exit_code)
         self.assertEqual(1, builder.factory['Statistics'].files)
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_output_document(self):
         arg_parser = AppArgumentParser()
 
@@ -659,7 +658,7 @@ class TestHTTPGoodApp(HTTPGoodAppTestCase):
 
         self.assertEqual(0, exit_code)
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_misc_urls(self):
         arg_parser = AppArgumentParser()
 
@@ -676,7 +675,7 @@ class TestHTTPGoodApp(HTTPGoodAppTestCase):
 
         self.assertEqual(4, exit_code)
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_database_path_question_mark(self):
         arg_parser = AppArgumentParser()
 
@@ -692,7 +691,7 @@ class TestHTTPGoodApp(HTTPGoodAppTestCase):
         self.assertEqual(0, exit_code)
         self.assertTrue(os.path.exists('test_.db'))
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_database_uri(self):
         arg_parser = AppArgumentParser()
 
@@ -707,7 +706,7 @@ class TestHTTPGoodApp(HTTPGoodAppTestCase):
 
         self.assertEqual(0, exit_code)
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_basic_auth(self):
         arg_parser = AppArgumentParser()
         args = arg_parser.parse_args([
@@ -723,7 +722,7 @@ class TestHTTPGoodApp(HTTPGoodAppTestCase):
         self.assertEqual(0, exit_code)
         self.assertEqual(1, builder.factory['Statistics'].files)
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_basic_auth_fail(self):
         arg_parser = AppArgumentParser()
         args = arg_parser.parse_args([
@@ -739,7 +738,7 @@ class TestHTTPGoodApp(HTTPGoodAppTestCase):
         self.assertEqual(0, exit_code)
         self.assertEqual(0, builder.factory['Statistics'].files)
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_page_requisite_level(self):
         arg_parser = AppArgumentParser()
         args = arg_parser.parse_args([
@@ -756,7 +755,7 @@ class TestHTTPGoodApp(HTTPGoodAppTestCase):
         self.assertEqual(0, exit_code)
         self.assertEqual(2, builder.factory['Statistics'].files)
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_link_type(self):
         arg_parser = AppArgumentParser()
         args = arg_parser.parse_args([
@@ -773,7 +772,7 @@ class TestHTTPGoodApp(HTTPGoodAppTestCase):
         self.assertEqual(0, exit_code)
         self.assertEqual(4, builder.factory['Statistics'].files)
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_escaped_fragment_input_url(self):
         arg_parser = AppArgumentParser()
         args = arg_parser.parse_args([
@@ -790,7 +789,7 @@ class TestHTTPGoodApp(HTTPGoodAppTestCase):
 
         self.assertTrue(os.path.exists('index.html?_escaped_fragment_=husky-cat'))
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_escaped_fragment_recursive(self):
         arg_parser = AppArgumentParser()
         args = arg_parser.parse_args([
@@ -806,7 +805,7 @@ class TestHTTPGoodApp(HTTPGoodAppTestCase):
         self.assertEqual(0, exit_code)
         self.assertEqual(2, builder.factory['Statistics'].files)
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_strip_session_id(self):
         arg_parser = AppArgumentParser()
         args = arg_parser.parse_args([
@@ -822,7 +821,7 @@ class TestHTTPGoodApp(HTTPGoodAppTestCase):
         self.assertEqual(0, exit_code)
         self.assertEqual(1, builder.factory['Statistics'].files)
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_referer_option(self):
         arg_parser = AppArgumentParser()
         args = arg_parser.parse_args([
@@ -838,7 +837,7 @@ class TestHTTPGoodApp(HTTPGoodAppTestCase):
         self.assertEqual(0, exit_code)
         self.assertEqual(2, builder.factory['Statistics'].files)
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_referer_option_negative(self):
         arg_parser = AppArgumentParser()
         args = arg_parser.parse_args([
@@ -856,7 +855,7 @@ class TestHTTPGoodApp(HTTPGoodAppTestCase):
         self.assertEqual(0, exit_code)
         self.assertEqual(0, builder.factory['Statistics'].files)
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_no_cache_arg(self):
         arg_parser = AppArgumentParser()
         args = arg_parser.parse_args([
@@ -885,7 +884,7 @@ class TestHTTPGoodApp(HTTPGoodAppTestCase):
         self.assertEqual(0, exit_code)
         self.assertEqual(1, builder.factory['Statistics'].files)
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_file_continue(self):
         arg_parser = AppArgumentParser()
         args = arg_parser.parse_args([self.get_url('/static/my_file.txt'),
@@ -907,7 +906,7 @@ class TestHTTPGoodApp(HTTPGoodAppTestCase):
             self.assertEqual('54388a281352fdb2cfa66009ac0e35dd8916af7c',
                              hashlib.sha1(data).hexdigest())
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_timestamping_hit(self):
         arg_parser = AppArgumentParser()
         args = arg_parser.parse_args([
@@ -931,7 +930,7 @@ class TestHTTPGoodApp(HTTPGoodAppTestCase):
         with open(filename, 'rb') as in_file:
             self.assertEqual(b'HI', in_file.read())
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_timestamping_miss(self):
         arg_parser = AppArgumentParser()
         args = arg_parser.parse_args([
@@ -955,7 +954,7 @@ class TestHTTPGoodApp(HTTPGoodAppTestCase):
         with open(filename, 'rb') as in_file:
             self.assertEqual(b'HELLO', in_file.read())
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_timestamping_hit_orig(self):
         arg_parser = AppArgumentParser()
         args = arg_parser.parse_args([
@@ -988,7 +987,7 @@ class TestHTTPGoodApp(HTTPGoodAppTestCase):
 
 
 class TestHTTPBadApp(HTTPBadAppTestCase):
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_bad_cookie(self):
         import http.cookiejar
         http.cookiejar.debug = True
@@ -1007,7 +1006,7 @@ class TestHTTPBadApp(HTTPBadAppTestCase):
         _logger.debug('{0}'.format(cookies))
         self.assertEqual(4, len(cookies))
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_long_cookie(self):
         arg_parser = AppArgumentParser()
         args = arg_parser.parse_args([
@@ -1024,7 +1023,7 @@ class TestHTTPBadApp(HTTPBadAppTestCase):
         _logger.debug('{0}'.format(cookies))
         self.assertEqual(0, len(cookies))
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_non_http_redirect(self):
         arg_parser = AppArgumentParser()
         args = arg_parser.parse_args([
@@ -1040,7 +1039,7 @@ class TestHTTPBadApp(HTTPBadAppTestCase):
         self.assertEqual(0, exit_code)
         self.assertEqual(0, builder.factory['Statistics'].files)
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_bad_redirect(self):
         arg_parser = AppArgumentParser()
         args = arg_parser.parse_args([
@@ -1057,7 +1056,7 @@ class TestHTTPBadApp(HTTPBadAppTestCase):
         self.assertEqual(7, exit_code)
         self.assertEqual(0, builder.factory['Statistics'].files)
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_ignore_length(self):
         arg_parser = AppArgumentParser()
         args = arg_parser.parse_args([
@@ -1074,7 +1073,7 @@ class TestHTTPBadApp(HTTPBadAppTestCase):
         self.assertEqual(1, builder.factory['Statistics'].files)
 
     # XXX: slow on pypy
-    @wpull.testing.async.async_test(timeout=120)
+    @wpull.testing._async.async_test(timeout=120)
     def test_bad_utf8(self):
         arg_parser = AppArgumentParser()
         args = arg_parser.parse_args([
@@ -1092,7 +1091,7 @@ class TestHTTPBadApp(HTTPBadAppTestCase):
         self.assertEqual(0, exit_code)
         self.assertEqual(4, builder.factory['Statistics'].files)
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_no_content(self):
         arg_parser = AppArgumentParser()
         args = arg_parser.parse_args([
@@ -1107,7 +1106,7 @@ class TestHTTPBadApp(HTTPBadAppTestCase):
         self.assertEqual(0, exit_code)
         self.assertEqual(1, builder.factory['Statistics'].files)
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_session_timeout(self):
         arg_parser = AppArgumentParser()
         args = arg_parser.parse_args([

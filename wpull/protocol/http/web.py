@@ -92,8 +92,7 @@ class WebSession(object):
                 self._current_session.SessionEvent.end_session, error=error)
             self._current_session.recycle()
 
-    @asyncio.coroutine
-    def start(self):
+    async def start(self):
         '''Begin fetching the next request.'''
         self._current_session = session = self._http_client.session()
 
@@ -104,14 +103,13 @@ class WebSession(object):
                 request.url_info.hostname_with_port in self._hostnames_with_auth:
             self._add_basic_auth_header(request)
 
-        response = yield from session.start(request)
+        response = await session.start(request)
 
         self._process_response(response)
 
         return response
 
-    @asyncio.coroutine
-    def download(self, file: Optional[IO[bytes]]=None,
+    async def download(self, file: Optional[IO[bytes]]=None,
                  duration_timeout: Optional[float]=None):
         '''Download content.
 
@@ -127,7 +125,7 @@ class WebSession(object):
 
         Coroutine.
         '''
-        yield from \
+        await \
             self._current_session.download(file, duration_timeout=duration_timeout)
 
     def _process_response(self, response: Response):

@@ -15,8 +15,7 @@ _ = gettext.gettext
 
 
 class NetworkSetupTask(ItemTask[AppSession]):
-    @asyncio.coroutine
-    def process(self, session: AppSession):
+    async def process(self, session: AppSession):
         self._build_resolver(session)
         self._build_connection_pool(session)
 

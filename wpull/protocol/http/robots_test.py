@@ -7,7 +7,7 @@ import asyncio
 from wpull.errors import ProtocolError, ServerError
 from wpull.protocol.http.request import Request, Response
 from wpull.protocol.http.robots import RobotsTxtChecker, NotInPoolError
-import wpull.testing.async
+import wpull.testing._async
 
 
 class MockWebClient(object):
@@ -30,17 +30,15 @@ class MockWebSession(object):
     def done(self):
         return self.done_value
 
-    @asyncio.coroutine
-    def start(self):
+    async def start(self):
         return self.client.mock_response_callback(self.client.request)
 
-    @asyncio.coroutine
-    def download(self, file=None):
+    async def download(self, file=None):
         pass
 
 
-class TestRobots(wpull.testing.async.AsyncTestCase):
-    @wpull.testing.async.async_test
+class TestRobots(wpull.testing._async.AsyncTestCase):
+    @wpull.testing._async.async_test
     def test_fetch_allow(self):
         checker = RobotsTxtChecker(web_client=MockWebClient())
         request = Request('http://example.com')
@@ -64,7 +62,7 @@ class TestRobots(wpull.testing.async.AsyncTestCase):
         self.assertTrue(checker.can_fetch_pool(request))
         self.assertTrue((yield from checker.can_fetch(request)))
 
-    @wpull.testing.async.async_test
+    @wpull.testing._async.async_test
     def test_fetch_disallow(self):
         checker = RobotsTxtChecker(web_client=MockWebClient())
         request = Request('http://example.com')
@@ -88,7 +86,7 @@ class TestRobots(wpull.testing.async.AsyncTestCase):
         self.assertFalse(checker.can_fetch_pool(request))
         self.assertFalse((yield from checker.can_fetch(request)))
 
-    @wpull.testing.async.async_test
+    @wpull.testing._async.async_test
     def test_redirect_loop(self):
         checker = RobotsTxtChecker(web_client=MockWebClient())
         request = Request('http://example.com')
@@ -115,7 +113,7 @@ class TestRobots(wpull.testing.async.AsyncTestCase):
         self.assertTrue((yield from checker.can_fetch(request)))
         self.assertTrue(checker.can_fetch_pool(request))
 
-    @wpull.testing.async.async_test
+    @wpull.testing._async.async_test
     def test_server_error(self):
         checker = RobotsTxtChecker(web_client=MockWebClient())
         request = Request('http://example.com')
@@ -138,7 +136,7 @@ class TestRobots(wpull.testing.async.AsyncTestCase):
         else:
             self.fail()  # pragma: no cover
 
-    @wpull.testing.async.async_test
+    @wpull.testing._async.async_test
     def test_fetch_allow_redirects(self):
         checker = RobotsTxtChecker(web_client=MockWebClient())
         request = Request('http://example.com')

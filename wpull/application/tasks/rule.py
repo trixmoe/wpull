@@ -15,8 +15,7 @@ _ = gettext.gettext
 
 
 class URLFiltersSetupTask(ItemTask[AppSession]):
-    @asyncio.coroutine
-    def process(self, session: AppSession):
+    async def process(self, session: AppSession):
         self._build_url_rewriter(session)
         session.factory.new('DemuxURLFilter', self._build_url_filters(session))
 
@@ -86,8 +85,7 @@ class URLFiltersSetupTask(ItemTask[AppSession]):
 
 
 class URLFiltersPostURLImportSetupTask(ItemTask[AppSession]):
-    @asyncio.coroutine
-    def process(self, session: AppSession):
+    async def process(self, session: AppSession):
         args = session.args
         span_hosts_filter = SpanHostsFilter(
             tuple(session.factory['URLTable'].get_hostnames()),

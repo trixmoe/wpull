@@ -18,8 +18,7 @@ _ = gettext.gettext
 
 
 class StatsStartTask(ItemTask[AppSession]):
-    @asyncio.coroutine
-    def process(self, session: AppSession):
+    async def process(self, session: AppSession):
         statistics = session.factory.new('Statistics',
                                          url_table=session.factory['URLTable'])
         statistics.quota = session.args.quota
@@ -31,8 +30,7 @@ class StatsStopTask(ItemTask[AppSession], HookableMixin):
         super().__init__()
         self.event_dispatcher.register(PluginFunctions.finishing_statistics)
 
-    @asyncio.coroutine
-    def process(self, session: AppSession):
+    async def process(self, session: AppSession):
         statistics = session.factory['Statistics']
         statistics.stop()
 

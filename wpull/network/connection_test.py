@@ -5,14 +5,14 @@ import socket
 import ssl
 import sys
 
-import wpull.testing.async
+import wpull.testing._async
 from wpull.errors import NetworkError, NetworkTimedOut, SSLVerificationError
 from wpull.network.connection import Connection
 from wpull.testing.badapp import BadAppTestCase, SSLBadAppTestCase
 
 
 class TestConnection(BadAppTestCase):
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_connection(self):
         connection = Connection(
             ('127.0.0.1', self.get_http_port()), 'localhost')
@@ -24,37 +24,34 @@ class TestConnection(BadAppTestCase):
 
         self.assertTrue(connection.closed())
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_mock_connect_socket_error(self):
         connection = Connection(
             ('127.0.0.1', self.get_http_port()), 'localhost')
 
-        @asyncio.coroutine
-        def mock_func():
+        async def mock_func():
             raise socket.error(123, 'Mock error')
 
         with self.assertRaises(NetworkError):
             yield from connection.run_network_operation(mock_func())
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_mock_connect_ssl_error(self):
         connection = Connection(
             ('127.0.0.1', self.get_http_port()), 'localhost')
 
-        @asyncio.coroutine
-        def mock_func():
+        async def mock_func():
             raise ssl.SSLError(123, 'Mock error')
 
         with self.assertRaises(NetworkError):
             yield from connection.run_network_operation(mock_func())
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_mock_request_socket_error(self):
         connection = Connection(
             ('127.0.0.1', self.get_http_port()), 'localhost')
 
-        @asyncio.coroutine
-        def mock_func():
+        async def mock_func():
             if sys.version_info < (3, 3):
                 raise socket.error(123, 'Mock error')
             else:
@@ -63,13 +60,12 @@ class TestConnection(BadAppTestCase):
         with self.assertRaises(NetworkError):
             yield from connection.run_network_operation(mock_func())
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_mock_request_ssl_error(self):
         connection = Connection(
             ('127.0.0.1', self.get_http_port()), 'localhost')
 
-        @asyncio.coroutine
-        def mock_func():
+        async def mock_func():
             if sys.version_info < (3, 3):
                 raise socket.error(123, 'Mock error')
             else:
@@ -78,38 +74,36 @@ class TestConnection(BadAppTestCase):
         with self.assertRaises(NetworkError):
             yield from connection.run_network_operation(mock_func())
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_mock_request_certificate_error(self):
         connection = Connection(
             ('127.0.0.1', self.get_http_port()), 'localhost')
 
-        @asyncio.coroutine
-        def mock_func():
+        async def mock_func():
             raise ssl.SSLError(1, 'I has a Certificate Error!')
 
         with self.assertRaises(SSLVerificationError):
             yield from connection.run_network_operation(mock_func())
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_mock_request_unknown_ca_error(self):
         connection = Connection(
             ('127.0.0.1', self.get_http_port()), 'localhost')
 
-        @asyncio.coroutine
-        def mock_func():
+        async def mock_func():
             raise ssl.SSLError(1, 'Uh oh! Unknown CA!')
 
         with self.assertRaises(SSLVerificationError):
             yield from connection.run_network_operation(mock_func())
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_connect_timeout(self):
         connection = Connection(('10.0.0.0', 1), connect_timeout=2)
 
         with self.assertRaises(NetworkTimedOut):
             yield from connection.connect()
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_read_timeout(self):
         connection = Connection(('127.0.0.1', self.get_http_port()),
                                 timeout=0.5)
@@ -137,7 +131,7 @@ class TestConnection(BadAppTestCase):
 
                 bytes_left -= len(data)
 
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_sock_reuse(self):
         connection1 = Connection(('127.0.0.1', self.get_http_port()))
         yield from connection1.connect()
@@ -155,7 +149,7 @@ class TestConnection(BadAppTestCase):
 
 
 class TestConnectionSSL(SSLBadAppTestCase):
-    @wpull.testing.async.async_test()
+    @wpull.testing._async.async_test()
     def test_start_tls(self):
         connection = Connection(('127.0.0.1', self.get_http_port()), timeout=1)
 

@@ -8,8 +8,7 @@ from wpull.pipeline.app import AppSession
 
 
 class LinkConversionSetupTask(ItemTask[AppSession]):
-    @asyncio.coroutine
-    def process(self, session: AppSession):
+    async def process(self, session: AppSession):
         self._build_document_converter(session)
 
     @classmethod
@@ -42,8 +41,7 @@ class QueuedFileSource(ItemSource[QueuedFileSession]):
     def __init__(self, app_session: AppSession):
         self._app_session = app_session
 
-    @asyncio.coroutine
-    def get_item(self) -> Optional[QueuedFileSession]:
+    async def get_item(self) -> Optional[QueuedFileSession]:
         if not self._app_session.args.convert_links:
             return
 
@@ -58,8 +56,7 @@ class QueuedFileSource(ItemSource[QueuedFileSession]):
 
 
 class LinkConversionTask(ItemTask[QueuedFileSession]):
-    @asyncio.coroutine
-    def process(self, session: QueuedFileSession):
+    async def process(self, session: QueuedFileSession):
         converter = session.app_session.factory.instance_map.get(
             'BatchDocumentConverter')
 

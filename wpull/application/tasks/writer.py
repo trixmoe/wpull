@@ -13,8 +13,7 @@ _ = gettext.gettext
 
 
 class FileWriterSetupTask(ItemTask[AppSession]):
-    @asyncio.coroutine
-    def process(self, session: AppSession):
+    async def process(self, session: AppSession):
         self._build_file_writer(session)
 
     @classmethod

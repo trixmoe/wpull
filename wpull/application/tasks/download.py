@@ -26,8 +26,7 @@ _ = gettext.gettext
 
 
 class ParserSetupTask(ItemTask[AppSession]):
-    @asyncio.coroutine
-    def process(self, session: AppSession):
+    async def process(self, session: AppSession):
         self._build_html_parser(session)
         self._build_demux_document_scraper(session)
 
@@ -96,8 +95,7 @@ class ParserSetupTask(ItemTask[AppSession]):
 
 
 class ClientSetupTask(ItemTask[AppSession]):
-    @asyncio.coroutine
-    def process(self, session: AppSession):
+    async def process(self, session: AppSession):
         self._build_web_client(session)
         self._build_ftp_client(session)
 
@@ -220,8 +218,7 @@ class ClientSetupTask(ItemTask[AppSession]):
 
 
 class ProxyServerSetupTask(ItemTask[AppSession]):
-    @asyncio.coroutine
-    def process(self, session: AppSession):
+    async def process(self, session: AppSession):
         '''Build MITM proxy server.'''
         args = session.args
         if not (args.phantomjs or args.youtube_dl or args.proxy_server):
@@ -244,15 +241,14 @@ class ProxyServerSetupTask(ItemTask[AppSession]):
         )[0]
         proxy_port = proxy_socket.getsockname()[1]
 
-        proxy_async_server = yield from asyncio.start_server(proxy_server, sock=proxy_socket)
+        proxy_async_server = await asyncio.start_server(proxy_server, sock=proxy_socket)
 
         session.async_servers.append(proxy_async_server)
         session.proxy_server_port = proxy_port
 
 
 class ProcessorSetupTask(ItemTask[AppSession]):
-    @asyncio.coroutine
-    def process(self, session: AppSession):
+    async def process(self, session: AppSession):
         self._build_processor(session)
 
     @classmethod
@@ -385,8 +381,7 @@ class ProcessorSetupTask(ItemTask[AppSession]):
 
 
 class CoprocessorSetupTask(ItemTask[ItemSession]):
-    @asyncio.coroutine
-    def process(self, session: AppSession):
+    async def process(self, session: AppSession):
         args = session.args
         if args.phantomjs or args.youtube_dl or args.proxy_server:
             proxy_port = session.proxy_server_port
@@ -487,9 +482,8 @@ class CoprocessorSetupTask(ItemTask[ItemSession]):
 
 
 class ProcessTask(ItemTask[ItemSession]):
-    @asyncio.coroutine
-    def process(self, session: ItemSession):
-        yield from session.app_session.factory['Processor'].process(session)
+    async def process(self, session: ItemSession):
+        await session.app_session.factory['Processor'].process(session)
 
         assert session.is_processed
 
@@ -497,16 +491,14 @@ class ProcessTask(ItemTask[ItemSession]):
 
 
 class BackgroundAsyncTask(ItemTask[ItemSession]):
-    @asyncio.coroutine
-    def process(self, session: ItemSession):
+    async def process(self, session: ItemSession):
         for task in session.app_session.background_async_tasks:
             if task.done():
-                yield from task
+                await task
 
 
 class CheckQuotaTask(ItemTask[ItemSession]):
-    @asyncio.coroutine
-    def process(self, session: ItemSession):
+    async def process(self, session: ItemSession):
         statistics = session.app_session.factory['Statistics']
 
         if statistics.is_quota_exceeded:

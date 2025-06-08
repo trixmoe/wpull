@@ -42,5 +42,6 @@ def async_test(func=None, timeout=30):
 
 
 class TornadoAsyncIOLoop(BaseAsyncIOLoop):
-    def initialize(self, event_loop):
-        super().initialize(event_loop, close_loop=False)
+    def initialize(self, asyncio_loop, **kwargs):
+        # FIXME: what did close_loop=False do? Tornado doesn't accept it anymore
+        super().initialize(asyncio_loop)

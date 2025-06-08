@@ -75,17 +75,15 @@ class PhantomJSDriver(Process):
 
         self._params = params
 
-    @asyncio.coroutine
-    def _stderr_callback(self, line):
+    async def _stderr_callback(self, line):
         _logger.warning(line.decode('utf-8', 'replace').rstrip())
 
-    @asyncio.coroutine
-    def start(self, use_atexit=True):
+    async def start(self, use_atexit=True):
         _logger.debug('PhantomJS start.')
 
         self._write_config()
 
-        yield from super().start(use_atexit)
+        await super().start(use_atexit)
 
     def _write_config(self):
         '''Write the parameters to a file for PhantomJS to read.'''

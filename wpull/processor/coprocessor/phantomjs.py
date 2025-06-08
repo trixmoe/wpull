@@ -86,8 +86,7 @@ class PhantomJSCoprocessor(object):
 
         self._file_writer_session = None
 
-    @asyncio.coroutine
-    def process(self, item_session: ItemSession, request, response, file_writer_session):
+    async def process(self, item_session: ItemSession, request, response, file_writer_session):
         '''Process PhantomJS.
 
         Coroutine.
@@ -107,7 +106,7 @@ class PhantomJSCoprocessor(object):
 
         for dummy in range(attempts):
             try:
-                yield from self._run_driver(item_session, request, response)
+                await self._run_driver(item_session, request, response)
             except asyncio.TimeoutError:
                 _logger.warning(_('Waiting for page load timed out.'))
                 break
@@ -121,8 +120,7 @@ class PhantomJSCoprocessor(object):
                 url=request.url_info.url
             ))
 
-    @asyncio.coroutine
-    def _run_driver(self, item_session: ItemSession, request, response):
+    async def _run_driver(self, item_session: ItemSession, request, response):
         '''Start PhantomJS processing.'''
         _logger.debug('Started PhantomJS processing.')
 
@@ -134,7 +132,7 @@ class PhantomJSCoprocessor(object):
         )
 
         with contextlib.closing(session):
-            yield from session.run()
+            await session.run()
 
         _logger.debug('Ended PhantomJS processing.')
 
@@ -157,8 +155,7 @@ class PhantomJSCoprocessorSession(object):
         self._temp_filenames = []
         self._action_warc_record = None
 
-    @asyncio.coroutine
-    def run(self):
+    async def run(self):
         scrape_snapshot_path = self._get_temp_path('phantom', suffix='.html')
         action_log_path = self._get_temp_path('phantom-action', suffix='.txt')
         event_log_path = self._get_temp_path('phantom-event', suffix='.txt')
@@ -189,17 +186,17 @@ class PhantomJSCoprocessorSession(object):
         ))
 
         with contextlib.closing(driver):
-            yield from driver.start()
+            await driver.start()
 
             # FIXME: we don't account that things might be scrolling and
             # downloading so it might not be a good idea to timeout like
             # this
             if self._params.load_time:
-                yield from asyncio.wait_for(
+                await asyncio.wait_for(
                     driver.process.wait(), self._params.load_time
                 )
             else:
-                yield from driver.process.wait()
+                await driver.process.wait()
 
             if driver.process.returncode != 0:
                 raise PhantomJSCrashed(
