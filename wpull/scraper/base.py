@@ -10,7 +10,7 @@ from wpull.document.base import BaseTextStreamReader, \
 from wpull.scraper.util import urljoin_safe
 
 
-@dataclass
+@dataclass(frozen=True)
 class LinkContext:
     link: str
     inline: bool = False
