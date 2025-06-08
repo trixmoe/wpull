@@ -93,9 +93,9 @@ One branch per bug/feature. Don't stack PR on top of other PR branches!
 
 ### Testing
 
-Testing can be done by using [Nose](http://nose.readthedocs.io/). 
-As described in Nose documentation, run `nosetests3` in the top
-level of the project directory.
+Testing can be done by using [pytest](http://pytest.org).
+As described in the [pyest documentation](https://docs.pytest.org/en/stable/how-to/usage.html),
+run `pytest` in the top level of the project directory.
 
 Additionally, the project is [configured to use the free Travis CI]
 (https://travis-ci.org/chfoo/wpull).
