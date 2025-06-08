@@ -33,6 +33,7 @@ dependencies = [
 [dependency-groups]
 dev = [
     "pytest>=8.4.0",
+    "warcat>=2.2.5",
 ]
 
 [tool.uv]
