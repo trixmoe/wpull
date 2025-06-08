@@ -7,11 +7,11 @@ import logging
 import os
 import tempfile
 import io
+from dataclasses import dataclass, field
 
-import namedlist
 import asyncio
 
-from typing import Callable
+from typing import Callable, Dict, Tuple
 
 from wpull.backport.logging import BraceMessage as __
 from wpull.document.html import HTMLReader
@@ -24,20 +24,19 @@ from wpull.warc.format import WARCRecord
 import wpull.url
 
 
-PhantomJSParams = namedlist.namedtuple(
-    'PhantomJSParamsType', [
-        ('snapshot_types', ('html', 'pdf')),
-        ('wait_time', 1),
-        ('num_scrolls', 10),
-        ('smart_scroll', True),
-        ('snapshot', True),
-        ('viewport_size', (1200, 1920)),
-        ('paper_size', (2400, 3840)),
-        ('load_time', 900),
-        ('custom_headers', {}),
-        ('page_settings', {}),
-    ]
-)
+@dataclass
+class PhantomJSParams:
+    snapshot_types: Tuple[str, str] = ("html", "pdf")
+    wait_time: int = 1
+    num_scrolls: int = 10
+    smart_scroll: bool = True
+    snapshot: bool = True
+    viewport_size: Tuple[int, int] = (1200, 1920)
+    paper_size: Tuple[int, int] = (2400, 3840)
+    load_time: int = 900
+    custom_headers: Dict[str, str] = field(default_factory=dict)
+    page_settings: Dict[str, str] = field(default_factory=dict)
+
 '''PhantomJS parameters
 
 Attributes:

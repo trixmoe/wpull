@@ -9,8 +9,8 @@ import logging
 import os.path
 import re
 import shutil
-
-import namedlist
+from dataclasses import dataclass
+from typing import Optional, Any
 
 from wpull.backport.logging import StyleAdapter
 from wpull.namevalue import NameValueRecord
@@ -31,22 +31,19 @@ _logger = StyleAdapter(logging.getLogger(__name__))
 _ = gettext.gettext
 
 
-WARCRecorderParams = namedlist.namedtuple(
-    'WARCRecorderParamsType',
-    [
-        ('compress', True),
-        ('extra_fields', None),
-        ('temp_dir', './'),
-        ('log', True),
-        ('appending', False),
-        ('digests', True),
-        ('cdx', None),
-        ('max_size', None),
-        ('move_to', None),
-        ('url_table', None),
-        ('software_string', None)
-    ]
-)
+@dataclass
+class WARCRecorderParams:
+    compress: bool = True
+    extra_fields: Optional[Any] = None
+    temp_dir: str = './'
+    log: bool = True
+    appending: bool = False
+    digests: bool = True
+    cdx: Optional[Any] = None
+    max_size: Optional[Any] = None
+    move_to: Optional[str] = None
+    url_table: Optional[Any] = None
+    software_string: Optional[str] = None
 ''':class:`WARCRecorder` parameters.
 
 Args:

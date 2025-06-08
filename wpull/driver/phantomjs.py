@@ -4,8 +4,9 @@ import os.path
 import subprocess
 import tempfile
 
-import namedlist
 import asyncio
+from dataclasses import dataclass, field
+from typing import List, Tuple, Optional, Dict
 
 from wpull.driver.process import Process
 import wpull.util
@@ -14,22 +15,20 @@ import wpull.util
 _logger = logging.getLogger(__name__)
 
 
-PhantomJSDriverParams = namedlist.namedtuple(
-    'PhantomJSDriverParamsType', [
-        'url',
-        ('snapshot_paths', []),
-        ('wait_time', 1),
-        ('num_scrolls', 10),
-        ('smart_scroll', True),
-        ('snapshot', True),
-        ('viewport_size', (1200, 1920)),
-        ('paper_size', (2400, 3840)),
-        ('event_log_filename', None),
-        ('action_log_filename', None),
-        ('custom_headers', {}),
-        ('page_settings', {}),
-    ]
-)
+@dataclass
+class PhantomJSDriverParams:
+    url: str
+    snapshot_paths: List[str] = field(default_factory=list)
+    wait_time: int = 1
+    num_scrolls: int = 10
+    smart_scroll: bool = True
+    snapshot: bool = True
+    viewport_size: Tuple[int, int] = (1200, 1920)
+    paper_size: Tuple[int, int] = (2400, 3840)
+    event_log_filename: Optional[str] = None
+    action_log_filename: Optional[str] = None
+    custom_headers: Dict[str, str] = field(default_factory=dict)
+    page_settings: Dict[str, str] = field(default_factory=dict)
 '''PhantomJS Driver parameters
 
 Attributes:
