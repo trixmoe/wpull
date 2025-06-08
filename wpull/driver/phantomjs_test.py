@@ -1,4 +1,3 @@
-import contextlib
 import os
 
 from wpull.driver.phantomjs import PhantomJSDriver, PhantomJSDriverParams

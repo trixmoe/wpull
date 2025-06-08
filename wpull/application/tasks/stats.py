@@ -2,7 +2,6 @@ import datetime
 import gettext
 import logging
 
-import asyncio
 
 from wpull.application.plugin import PluginFunctions, event_interface
 from wpull.backport.logging import BraceMessage as __

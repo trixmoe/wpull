@@ -146,7 +146,7 @@ class TestURLRewrite(unittest.TestCase):
             "With only prefix"
         )
 
-        url = "sid=9682993c8daa2c5497996114facdc805" + "&x=y";
+        url = "sid=9682993c8daa2c5497996114facdc805" + "&x=y"
         self.assertEqual(
             strip_query_session_id(url),
             'x=y',

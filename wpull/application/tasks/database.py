@@ -1,7 +1,6 @@
 import codecs
 import gettext
 import itertools
-import asyncio
 import logging
 import sys
 

@@ -1,7 +1,6 @@
 import gettext
 import logging
 
-import asyncio
 
 from wpull.pipeline.pipeline import ItemTask
 from wpull.pipeline.app import AppSession

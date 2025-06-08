@@ -1,6 +1,5 @@
 import gettext
 import logging
-import asyncio
 import os
 import ssl
 import tempfile

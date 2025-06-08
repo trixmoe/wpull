@@ -1,4 +1,3 @@
-import asyncio
 
 from wpull.application.builder import Builder
 from wpull.application.options import AppArgumentParser

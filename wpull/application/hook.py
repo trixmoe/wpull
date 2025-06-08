@@ -5,14 +5,12 @@ See :ref:`scripting-hooks` for an introduction.
 '''
 import collections.abc
 import enum
-import functools
 import gettext
 import logging
 
 from typing import Optional
 
 from wpull.application.plugin import WpullPlugin, PluginFunctionCategory
-from wpull.backport.logging import BraceMessage as __
 
 _ = gettext.gettext
 _logger = logging.getLogger(__name__)

@@ -6,7 +6,6 @@ import gettext
 import logging
 import http.client
 
-import asyncio
 
 from typing import Optional, Callable, IO
 from wpull.errors import ProtocolError

@@ -13,7 +13,6 @@ import codecs
 from html.entities import codepoint2name
 import re
 import logging
-import string
 
 # Import a library to autodetect character encodings.
 chardet_type = None
@@ -417,7 +416,7 @@ class UnicodeDammit:
             u = self._to_unicode(markup, proposed, errors)
             self.markup = u
             self.original_encoding = proposed
-        except Exception as e:
+        except Exception:
             # print "That didn't work!"
             # print e
             return None

@@ -3,7 +3,6 @@ import gettext
 import logging
 
 
-import asyncio
 
 from wpull.backport.logging import StyleAdapter
 from wpull.pipeline.session import ItemSession

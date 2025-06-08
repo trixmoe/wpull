@@ -1,8 +1,6 @@
 '''RPC processes.'''
 
-import abc
 import gettext
-import json
 import logging
 import subprocess
 import atexit
@@ -11,7 +9,6 @@ import time
 
 import asyncio
 
-from wpull.backport.logging import BraceMessage as __
 
 
 _ = gettext.gettext

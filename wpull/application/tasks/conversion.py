@@ -1,4 +1,3 @@
-import asyncio
 from typing import Optional
 
 from wpull.database.base import NotFound

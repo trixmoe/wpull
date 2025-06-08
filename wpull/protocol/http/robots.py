@@ -5,7 +5,6 @@ import gettext
 import logging
 import os
 
-import asyncio
 
 from wpull.backport.logging import BraceMessage as __
 import wpull.body

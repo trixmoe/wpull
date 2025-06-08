@@ -1,6 +1,5 @@
 '''Base classes'''
 import abc
-import collections
 import io
 from dataclasses import dataclass
 from typing import Optional

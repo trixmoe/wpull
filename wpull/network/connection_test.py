@@ -1,6 +1,5 @@
 # encoding=utf8
 
-import asyncio
 import socket
 import ssl
 import sys

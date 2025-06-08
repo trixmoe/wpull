@@ -1,4 +1,3 @@
-import pytest
 import unittest
 
 def pytest_pycollect_makeitem(collector, name, obj):

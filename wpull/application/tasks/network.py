@@ -1,9 +1,7 @@
 import functools
 import gettext
 import logging
-import asyncio
 
-from wpull.backport.logging import BraceMessage as __
 from wpull.network.connection import Connection, SSLConnection
 from wpull.network.dns import IPFamilyPreference
 from wpull.pipeline.pipeline import ItemTask

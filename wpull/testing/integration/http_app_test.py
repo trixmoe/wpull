@@ -6,7 +6,6 @@ import tempfile
 import socket
 import sys
 
-import asyncio
 
 from wpull.application.app import Application
 from wpull.application.builder import Builder
