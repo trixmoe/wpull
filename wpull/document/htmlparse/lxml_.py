@@ -1,6 +1,7 @@
 '''Parsing using lxml and libxml2.'''
 import io
 
+from frozendict import frozendict
 import lxml.html
 
 from wpull.document.htmlparse.base import BaseParser
@@ -44,7 +45,7 @@ class HTMLParserTarget(object):
             self.tail_buffer = None
 
         self.tag = tag
-        self.attrib = attrib
+        self.attrib = frozendict(attrib)
         self.buffer = io.StringIO()
 
     def data(self, data):

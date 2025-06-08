@@ -2,6 +2,7 @@
 import html5lib.constants
 import io
 import os.path
+from frozendict import frozendict
 from html5lib._tokenizer import HTMLTokenizer
 
 from wpull.document.htmlparse.base import BaseParser
@@ -48,7 +49,7 @@ class HTMLParser(BaseParser):
                     tail_buffer = None
 
                 tag = token['name']
-                attrib = dict(token['data'])
+                attrib = frozendict(token['data'])
                 buffer = io.StringIO()
 
                 if token['name'] == 'script':
