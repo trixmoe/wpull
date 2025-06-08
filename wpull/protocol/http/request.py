@@ -7,7 +7,7 @@ from wpull.protocol.abstract.request import SerializableMixin, DictableMixin, \
     URLPropertyMixin, ProtocolResponseMixin, BaseResponse, BaseRequest
 from wpull.errors import ProtocolError
 from wpull.namevalue import NameValueRecord
-import wpull.string
+import wpull._string
 
 
 class RawRequest(BaseRequest, SerializableMixin, DictableMixin):
@@ -75,7 +75,7 @@ class RawRequest(BaseRequest, SerializableMixin, DictableMixin):
         if match:
             groups = match.groups()
             if len(groups) == 3:
-                return wpull.string.to_str(
+                return wpull._string.to_str(
                     (groups[0], groups[1], groups[2]),
                     encoding=self.encoding,
                 )
@@ -237,7 +237,7 @@ class Response(BaseResponse, SerializableMixin, DictableMixin):
         if match:
             groups = match.groups()
             if len(groups) == 3:
-                return wpull.string.to_str(
+                return wpull._string.to_str(
                     (groups[0], int(groups[1]), groups[2]),
                     encoding='latin-1',
                 )
@@ -253,7 +253,7 @@ class Response(BaseResponse, SerializableMixin, DictableMixin):
         )
 
     def __str__(self):
-        return wpull.string.printable_str(
+        return wpull._string.printable_str(
             self.to_bytes().decode('utf-8', 'replace'), keep_newlines=True
         )
 

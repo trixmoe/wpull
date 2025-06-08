@@ -4,7 +4,7 @@ import base64
 import io
 import logging
 
-import wpull.string
+import wpull._string
 from wpull.errors import NetworkError
 from wpull.network.pool import ConnectionPool
 from wpull.protocol.http.request import RawRequest
@@ -143,7 +143,7 @@ class HTTPProxyConnectionPool(ConnectionPool):
             raise NetworkError(
                 'Proxy does not support CONNECT: {} {}'
                 .format(response.status_code,
-                        wpull.string.printable_str(response.reason))
+                        wpull._string.printable_str(response.reason))
             )
 
     def add_auth_header(self, request):

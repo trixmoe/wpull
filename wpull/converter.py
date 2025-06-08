@@ -8,7 +8,7 @@ import logging
 import os.path
 import shutil
 
-import wpull.string
+import wpull._string
 from wpull.backport.logging import BraceMessage as __
 from wpull.database.base import NotFound
 from wpull.document.htmlparse.element import Comment, Element, Doctype
@@ -118,7 +118,7 @@ class HTMLConverter(HTMLScraper, BaseDocumentConverter):
         self._base_url = base_url
 
         with open(input_filename, 'rb') as in_file:
-            encoding = wpull.string.detect_encoding(
+            encoding = wpull._string.detect_encoding(
                 in_file.peek(1048576), is_html=True
             )
 
@@ -238,7 +238,7 @@ class HTMLConverter(HTMLScraper, BaseDocumentConverter):
         if done_key in self._css_already_done:
             return
 
-        text = wpull.string.to_str(
+        text = wpull._string.to_str(
             link_info.element.attrib.get(link_info.attrib)
         )
         new_value = self._css_converter.convert_text(
@@ -253,7 +253,7 @@ class HTMLConverter(HTMLScraper, BaseDocumentConverter):
         if link_info.element in self._css_already_done:
             return
 
-        text = wpull.string.to_str(link_info.element.text)
+        text = wpull._string.to_str(link_info.element.text)
         new_text = self._css_converter.convert_text(
             text, base_url=self._base_url
         )
@@ -286,7 +286,7 @@ class CSSConverter(CSSScraper, BaseDocumentConverter):
     def convert(self, input_filename, output_filename, base_url=None):
         with open(input_filename, 'rb') as in_file, \
                 open(output_filename, 'wb') as out_file:
-            encoding = wpull.string.detect_encoding(
+            encoding = wpull._string.detect_encoding(
                 wpull.util.peek_file(in_file))
             out_stream = codecs.getwriter(encoding)(out_file)
 

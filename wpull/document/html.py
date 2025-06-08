@@ -2,7 +2,7 @@
 import io
 
 from wpull.document.base import BaseHTMLReader, BaseDocumentDetector
-import wpull.string
+import wpull._string
 
 
 class HTMLLightParserTarget(object):
@@ -213,7 +213,7 @@ class HTMLReader(BaseDocumentDetector, BaseHTMLReader):
     @classmethod
     def is_file(cls, file):
         '''Return whether the file is likely to be HTML.'''
-        peeked_data = wpull.string.printable_bytes(
+        peeked_data = wpull._string.printable_bytes(
             wpull.util.peek_file(file)).lower()
 
         if b'<!doctype html' in peeked_data \

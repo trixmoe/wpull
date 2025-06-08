@@ -13,7 +13,7 @@ from wpull.pipeline.pipeline import ItemTask
 from wpull.pipeline.session import ItemSession
 from wpull.pipeline.app import AppSession
 import wpull.resmon
-import wpull.string
+import wpull._string
 
 from wpull.protocol.http.stream import Stream as HTTPStream
 import wpull.util

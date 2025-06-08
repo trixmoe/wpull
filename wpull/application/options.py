@@ -10,7 +10,7 @@ import sys
 from wpull.backport.logging import BraceMessage as __
 from wpull.util import IS_PYPY
 import wpull.resmon
-import wpull.string
+import wpull._string
 import wpull.version
 
 
@@ -156,7 +156,7 @@ class AppArgumentParser(argparse.ArgumentParser):
         _logger.debug(__('Encoding: {0}', encoding))
 
         args = super().parse_args(
-            args=wpull.string.to_str(args, encoding=encoding),
+            args=wpull._string.to_str(args, encoding=encoding),
             namespace=namespace
         )
 
@@ -167,8 +167,8 @@ class AppArgumentParser(argparse.ArgumentParser):
     def get_argv_encoding(cls, argv):
         encoding = 'utf-8'
         stripped_argv = [
-            wpull.string.printable_bytes(arg) for arg in
-            wpull.string.to_bytes(argv, encoding='ascii', error='replace')
+            wpull._string.printable_bytes(arg) for arg in
+            wpull._string.to_bytes(argv, encoding='ascii', error='replace')
         ]
 
         try:
@@ -178,7 +178,7 @@ class AppArgumentParser(argparse.ArgumentParser):
         else:
             encoding = stripped_argv[index + 1]
 
-        return wpull.string.to_str(encoding)
+        return wpull._string.to_str(encoding)
 
     def exit(self, status=0, message=None):
         if self._real_exit:

@@ -1,13 +1,13 @@
 '''XML document.'''
 from wpull.document.base import BaseDocumentDetector
-import wpull.string
+import wpull._string
 import wpull.util
 
 
 class XMLDetector(BaseDocumentDetector):
     @classmethod
     def is_file(cls, file):
-        peeked_data = wpull.string.printable_bytes(
+        peeked_data = wpull._string.printable_bytes(
             wpull.util.peek_file(file)).lower()
 
         if b'<?xml' in peeked_data:

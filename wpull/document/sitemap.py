@@ -53,7 +53,7 @@ class SitemapReader(BaseDocumentDetector, BaseExtractiveReader):
             except zlib.error:
                 pass
 
-        peeked_data = wpull.string.printable_bytes(peeked_data)
+        peeked_data = wpull._string.printable_bytes(peeked_data)
 
         if b'<?xml' in peeked_data \
            and (b'<sitemapindex' in peeked_data or b'<urlset' in peeked_data):

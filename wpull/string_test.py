@@ -4,7 +4,7 @@ import codecs
 import itertools
 import unittest
 
-from wpull.string import to_bytes, to_str, detect_encoding, printable_bytes, \
+from wpull._string import to_bytes, to_str, detect_encoding, printable_bytes, \
     normalize_codec_name, format_size, printable_str
 
 

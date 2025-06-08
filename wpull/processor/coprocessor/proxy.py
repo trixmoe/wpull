@@ -4,7 +4,7 @@ from http.cookiejar import CookieJar
 
 from typing import Optional, cast
 
-import wpull.string
+import wpull._string
 from wpull.application.hook import Actions
 from wpull.backport.logging import BraceMessage as __
 from wpull.database.base import BaseURLTable
@@ -148,10 +148,10 @@ class ProxyCoprocessorSession(object):
               'Length: {content_length} [{content_type}].'),
             url=request.url,
             status_code=response.status_code,
-            reason=wpull.string.printable_str(response.reason),
-            content_length=wpull.string.printable_str(
+            reason=wpull._string.printable_str(response.reason),
+            content_length=wpull._string.printable_str(
                 response.fields.get('Content-Length', _('none'))),
-            content_type=wpull.string.printable_str(
+            content_type=wpull._string.printable_str(
                 response.fields.get('Content-Type', _('none'))),
         ))
 

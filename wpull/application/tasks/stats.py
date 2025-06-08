@@ -10,7 +10,7 @@ from wpull.pipeline.pipeline import ItemTask
 from wpull.pipeline.app import AppSession
 from wpull.stats import Statistics
 from wpull.application.hook import HookableMixin
-import wpull.string
+import wpull._string
 import wpull.application.hook
 
 _logger = logging.getLogger(__name__)
@@ -45,13 +45,13 @@ class StatsStopTask(ItemTask[AppSession], HookableMixin):
         time_length = datetime.timedelta(
             seconds=int(stats.stop_time - stats.start_time)
         )
-        file_size = wpull.string.format_size(stats.size)
+        file_size = wpull._string.format_size(stats.size)
 
         if stats.bandwidth_meter.num_samples:
             speed = stats.bandwidth_meter.speed()
 
             if human_format_speed:
-                speed_size_str = wpull.string.format_size(speed)
+                speed_size_str = wpull._string.format_size(speed)
             else:
                 speed_size_str = '{:.1f} b'.format(speed * 8)
         else:

@@ -7,7 +7,7 @@ import tempfile
 from wpull.backport.logging import BraceMessage as __
 from wpull.pipeline.app import AppSession
 from wpull.pipeline.pipeline import ItemTask
-import wpull.string
+import wpull._string
 import wpull.application.hook
 from wpull.pipeline.session import ItemSession
 import wpull.resmon
@@ -70,12 +70,12 @@ class ResmonSleepTask(ItemTask[ItemSession]):
                     _logger.warning(__(
                         _('Low disk space on {path} ({size} free).'),
                         path=resource_info.path,
-                        size=wpull.string.format_size(resource_info.free)
+                        size=wpull._string.format_size(resource_info.free)
                     ))
                 else:
                     _logger.warning(__(
                         _('Low memory ({size} free).'),
-                        size=wpull.string.format_size(resource_info.free)
+                        size=wpull._string.format_size(resource_info.free)
                     ))
 
                 _logger.warning(_('Waiting for operator to clear situation.'))

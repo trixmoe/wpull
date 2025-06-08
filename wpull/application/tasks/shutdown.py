@@ -9,7 +9,7 @@ from wpull.application.hook import HookableMixin
 from wpull.application.plugin import PluginFunctions, hook_interface
 from wpull.backport.logging import BraceMessage as __
 from wpull.pipeline.pipeline import ItemTask
-import wpull.string
+import wpull._string
 import wpull.url
 import wpull.util
 import wpull.warc

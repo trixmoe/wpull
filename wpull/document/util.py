@@ -5,7 +5,7 @@ import logging
 from wpull.backport.logging import BraceMessage as __
 import wpull.protocol.http.util
 import wpull.util
-import wpull.string
+import wpull._string
 
 
 _logger = logging.getLogger(__name__)
@@ -24,7 +24,7 @@ def get_heading_encoding(response):
         response.fields.get('content-type', ''))
 
     if encoding:
-        return wpull.string.normalize_codec_name(encoding)
+        return wpull._string.normalize_codec_name(encoding)
     else:
         return None
 
@@ -42,7 +42,7 @@ def detect_response_encoding(response, is_html=False, peek=131072):
     '''
     encoding = get_heading_encoding(response)
 
-    encoding = wpull.string.detect_encoding(
+    encoding = wpull._string.detect_encoding(
         wpull.util.peek_file(response.body, peek), encoding=encoding, is_html=is_html
     )
 

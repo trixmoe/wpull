@@ -202,7 +202,7 @@ class Response(BaseResponse, DictableMixin):
     def __str__(self):
         return '{} {}\n'.format(
             self.reply.code,
-            wpull.string.printable_str(self.reply.text, keep_newlines=True)
+            wpull._string.printable_str(self.reply.text, keep_newlines=True)
         )
 
 

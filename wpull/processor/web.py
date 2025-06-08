@@ -24,7 +24,7 @@ from wpull.processor.base import BaseProcessor, BaseProcessorSession, \
 from wpull.processor.rule import FetchRule, ResultRule, ProcessingRule
 from wpull.url import URLInfo
 from wpull.writer import BaseFileWriter
-import wpull.string
+import wpull._string
 import wpull.util
 
 
@@ -362,9 +362,9 @@ class WebProcessorSession(BaseProcessorSession):
     def _add_post_data(self, request: Request):
         '''Add data to the payload.'''
         if self._item_session.url_record.post_data:
-            data = wpull.string.to_bytes(self._item_session.url_record.post_data)
+            data = wpull._string.to_bytes(self._item_session.url_record.post_data)
         else:
-            data = wpull.string.to_bytes(
+            data = wpull._string.to_bytes(
                 self._processor.fetch_params.post_data
             )
 
@@ -387,10 +387,10 @@ class WebProcessorSession(BaseProcessorSession):
                 'Length: {content_length} [{content_type}].'),
             url=request.url,
             status_code=response.status_code,
-            reason=wpull.string.printable_str(response.reason),
-            content_length=wpull.string.printable_str(
+            reason=wpull._string.printable_str(response.reason),
+            content_length=wpull._string.printable_str(
                 response.fields.get('Content-Length', _('unspecified'))),
-            content_type=wpull.string.printable_str(
+            content_type=wpull._string.printable_str(
                 response.fields.get('Content-Type', _('unspecified'))),
         )
 

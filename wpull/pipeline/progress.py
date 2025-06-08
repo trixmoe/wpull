@@ -11,7 +11,7 @@ import re
 
 from wpull.application.hook import HookableMixin
 from wpull.network.bandwidth import BandwidthMeter
-import wpull.string
+import wpull._string
 from wpull.protocol.abstract.request import BaseRequest, BaseResponse
 from wpull.protocol.http.request import Response as HTTPResponse
 from wpull.protocol.ftp.request import Response as FTPResponse
@@ -278,7 +278,7 @@ class BarProgress(ProgressPrinter):
 
     def _print_size_downloaded(self):
         '''Print the bytes downloaded.'''
-        self._print(wpull.string.format_size(self.current_value))
+        self._print(wpull._string.format_size(self.current_value))
 
     def _print_duration(self):
         '''Print the elapsed download time.'''
@@ -291,7 +291,7 @@ class BarProgress(ProgressPrinter):
             speed = self._bandwidth_meter.speed()
 
             if self._human_format:
-                file_size_str = wpull.string.format_size(speed)
+                file_size_str = wpull._string.format_size(speed)
             else:
                 file_size_str = '{:.1f} b'.format(speed * 8)
 

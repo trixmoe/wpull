@@ -11,7 +11,7 @@ import urllib.parse
 import posixpath
 
 from wpull.backport.logging import BraceMessage as __
-import wpull.string
+import wpull._string
 
 
 _logger = logging.getLogger(__name__)
@@ -410,7 +410,7 @@ def parse_url_or_log(url, encoding='utf-8'):
     except ValueError as error:
         _logger.warning(__(
             _('Unable to parse URL ‘{url}’: {error}.'),
-            url=wpull.string.printable_str(url), error=error))
+            url=wpull._string.printable_str(url), error=error))
     else:
         return url_info
 

@@ -5,7 +5,7 @@ import io
 from wpull.document.base import BaseTextStreamReader, \
     BaseDocumentDetector, VeryFalse
 from wpull.regexstream import RegexStream
-import wpull.string
+import wpull._string
 import wpull.util
 
 
@@ -45,7 +45,7 @@ class JavaScriptReader(BaseDocumentDetector, BaseTextStreamReader):
     @classmethod
     def is_file(cls, file):
         '''Return whether the file is likely JS.'''
-        peeked_data = wpull.string.printable_bytes(
+        peeked_data = wpull._string.printable_bytes(
             wpull.util.peek_file(file)).lower()
 
         if b'<html' in peeked_data:
