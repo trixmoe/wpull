@@ -17,6 +17,7 @@ import wpull.testing._async
 
 
 class Mixin:
+    @tornado.testing.gen_test
     async def test_basic_requests(self):
         proxy_http_client = Client()
         proxy_server = HTTPProxyServer(proxy_http_client)
