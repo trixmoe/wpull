@@ -98,7 +98,7 @@ class TestConnection(BadAppTestCase):
 
     @wpull.testing._async.async_test()
     def test_connect_timeout(self):
-        connection = Connection(('10.0.0.0', 1), connect_timeout=2)
+        connection = Connection(('192.0.2.0', 1), connect_timeout=2)
 
         with self.assertRaises(NetworkTimedOut):
             yield from connection.connect()
