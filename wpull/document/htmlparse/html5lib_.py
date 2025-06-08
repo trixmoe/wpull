@@ -1,8 +1,8 @@
 '''Parsing using html5lib python.'''
 import html5lib.constants
-import html5lib.tokenizer
 import io
 import os.path
+from html5lib._tokenizer import HTMLTokenizer
 
 from wpull.document.htmlparse.base import BaseParser
 from wpull.document.htmlparse.element import Comment, Doctype, Element
@@ -24,10 +24,10 @@ class HTMLParser(BaseParser):
         return ValueError
 
     def parse(self, file, encoding=None):
-        tokenizer = html5lib.tokenizer.HTMLTokenizer(
-            file, encoding=encoding,
-            useChardet=False if encoding else True,
-            parseMeta=False if encoding else True,
+        # FIXME: HTMLTokenizer does not accept an encoding argument anymore
+        tokenizer = HTMLTokenizer(
+            file,
+            useChardet=True,
         )
 
         tag = None
@@ -97,7 +97,7 @@ if __name__ == '__main__':
         'testing', 'samples', 'xkcd_1.html'
         )
     with open(path, 'rb') as in_file:
-        tokenizer = html5lib.tokenizer.HTMLTokenizer(in_file)
+        tokenizer = HTMLTokenizer(in_file)
 
         for token in tokenizer:
             print(token)
