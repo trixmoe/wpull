@@ -1,9 +1,9 @@
 # encoding=utf-8
 '''Instance creation and management.'''
-import collections
+import collections.abc
 
 
-class Factory(collections.Mapping, object):
+class Factory(collections.abc.Mapping, object):
     '''Allows selection of classes and keeps track of instances.
 
     This class behaves like a mapping. Keys are names of classes and values are

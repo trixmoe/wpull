@@ -1,8 +1,7 @@
+import collections.abc
 import enum
 import functools
 import inspect
-
-import collections
 
 import typing
 from typing import Any, Iterator
@@ -61,7 +60,7 @@ def event(name: Any):
     return _plugin_attach_decorator(name, category=PluginFunctionCategory.event)
 
 
-class InterfaceRegistry(collections.Mapping):
+class InterfaceRegistry(collections.abc.Mapping):
     def __init__(self):
         super().__init__()
         self._interfaces = {}

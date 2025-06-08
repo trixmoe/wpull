@@ -1,6 +1,6 @@
 '''Caching.'''
 import abc
-import collections
+import collections.abc
 import sys
 import time
 
@@ -16,7 +16,7 @@ else:
     total_ordering = lambda obj: obj
 
 
-class BaseCache(collections.Mapping, object):
+class BaseCache(collections.abc.Mapping, object):
     @abc.abstractmethod
     def __setitem__(self, key, value):
         pass

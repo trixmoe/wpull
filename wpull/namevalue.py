@@ -1,9 +1,9 @@
 # encoding=utf-8
 '''Key-value pairs.'''
-import collections
 import gettext
 import io
 import textwrap
+from collections.abc import MutableMapping
 
 from wpull.collections import OrderedDefaultDict
 
@@ -11,7 +11,7 @@ from wpull.collections import OrderedDefaultDict
 _ = gettext.gettext
 
 
-class NameValueRecord(collections.MutableMapping):
+class NameValueRecord(MutableMapping):
     '''An ordered mapping of name-value pairs.
 
     Duplicated names are accepted.

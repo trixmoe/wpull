@@ -1,20 +1,20 @@
 # encoding=utf-8
 '''Data structures.'''
-from collections import OrderedDict
-import collections
 import copy
+import collections.abc
 import itertools
 import functools
+from collections import OrderedDict
 
 
-class OrderedDefaultDict(OrderedDict):
+class OrderedDefaultDict(collections.OrderedDict):
     '''An ordered default dict.
 
     http://stackoverflow.com/a/6190500/1524507
     '''
     def __init__(self, default_factory=None, *args, **kwargs):
         if default_factory is not None and \
-           not isinstance(default_factory, collections.Callable):
+           not isinstance(default_factory, collections.abc.Callable):
             raise TypeError('First argument must be callable')
         OrderedDict.__init__(self, *args, **kwargs)
         self.default_factory = default_factory
@@ -237,7 +237,7 @@ class LinkedList(object):
         self.tail = None
 
 
-class FrozenDict(collections.Mapping, collections.Hashable):
+class FrozenDict(collections.abc.Mapping, collections.abc.Hashable):
     '''Immutable mapping wrapper.'''
     __slots__ = ('orig_dict', 'hash_cache',)
 
