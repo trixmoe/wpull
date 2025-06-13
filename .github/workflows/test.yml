@@ -14,15 +14,14 @@ jobs:
       fail-fast: false
       matrix:
         os: [ ubuntu-24.04, ubuntu-24.04-arm ]
-        container: [ python:3.4, python:3.5, python:3.6 ]
+        container: [ python:3.9 ]
     container: ${{ matrix.container }}
     steps:
       # GitHub Actions default was switched to nodejs20 and requires newer glibc. This causes images like ubuntu 18.04 to fail, but seems to also apply to python:3.4. (https://web.archive.org/web/20241224013414/https://github.com/actions/checkout/issues/1590)
       # Fix is cloning directly w/o using the checkout action. ( https://web.archive.org/web/20250607154241/https://kishaningithub.github.io/blog/checking-out-code-using-github-action-in-legacy-runner/ )
       - name: Clone repo w/o checkout action, which requires newer glibc than python:3.4 has
         run: git clone --depth 1 -b "${GITHUB_HEAD_REF:-$GITHUB_REF_NAME}" "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}.git" .
-      - run: pip install -r requirements.txt
+      - run: pip install .
       - run: pip install nose coverage warcat youtube-dl
-      - run: pip install . --no-dependencies
       - run: nosetests --with-coverage --cover-package=wpull --cover-branches
         continue-on-error: true
